@@ -1,8 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 
 @Entity()
 export class Guest {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn("uuid")
   id: number;
 
   @Column()
@@ -11,6 +16,15 @@ export class Guest {
   @Column()
   lastName: string;
 
-  @Column()
+  @Column({ length: 200 })
   greetingText: string;
+
+  @Column()
+  studentId: string;
+
+  @Column()
+  phanName: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
 }
