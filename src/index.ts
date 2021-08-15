@@ -5,7 +5,7 @@ import { createConnection } from "typeorm";
 import { AddData, getCertificate } from "./controllers/GuestController";
 
 const app = express();
-const PORT = 3005;
+const PORT = 80;
 
 createConnection().then(() =>
   console.log("connect db successfull! 🥂", new Date().toISOString())
