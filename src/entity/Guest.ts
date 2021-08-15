@@ -25,6 +25,15 @@ export class Guest {
   @Column()
   phanName: string;
 
+  @Column()
+  nameTitle: string;
+
+  @Column()
+  phanType: string;
+
+  @Column()
+  ingredient: string;
+
   @CreateDateColumn()
   createdAt: Date;
 }

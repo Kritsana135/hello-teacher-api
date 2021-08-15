@@ -1,37 +1,59 @@
-import { Request, Response } from "express";
-import Joi = require("joi");
-import { getConnection } from "typeorm";
-import { Guest } from "../entity/Guest";
 import * as fontkit from "@pdf-lib/fontkit";
+import { Request, Response } from "express";
 import * as fs from "fs";
 import { PDFDocument, rgb } from "pdf-lib";
-import { fromBase64 } from "pdf2pic";
-import { ToBase64Response } from "pdf2pic/dist/types/toBase64Response";
-import { readFileSync } from "node:fs";
+import { getConnection } from "typeorm";
+import { Guest } from "../entity/Guest";
+import Joi = require("joi");
 
 const addDataSchema = Joi.object({
-  firstName: Joi.string().max(30).required(),
-  lastName: Joi.string().max(30).required(),
-  studentId: Joi.string().max(30).required(),
-  greetingText: Joi.string().max(200).required(),
+  firstName: Joi.string().min(1).max(30).required(),
+  lastName: Joi.string().min(1).max(30).required(),
+  studentId: Joi.string().min(1).max(30).required(),
+  greetingText: Joi.string().min(1).max(200).required(),
+  nameTitle: Joi.number().required(),
+  phanName: Joi.string().max(30).required(),
+  phanType: Joi.number().required(),
+  ingredient: Joi.string().required(),
 });
+
+const NAME_TITLE = ["นาย", "นางสาว", "นาง"];
+const PHAN_TYPE = ["สวยงาม", "ความคิดสร้างสรรค์"];
 
 export const AddData = async (req: Request, res: Response) => {
   const { body } = req;
 
   const { error } = addDataSchema.validate(body);
   if (!error) {
-    const { firstName, lastName, studentId, greetingText } = body;
+    const {
+      firstName,
+      lastName,
+      studentId,
+      greetingText,
+      nameTitle,
+      phanName,
+      phanType,
+      ingredient,
+    } = body;
     const newGusest = new Guest();
     newGusest.firstName = firstName;
     newGusest.lastName = lastName;
     newGusest.studentId = studentId;
     newGusest.greetingText = greetingText;
+    newGusest.phanName = phanName;
+    newGusest.nameTitle = NAME_TITLE[nameTitle];
+    newGusest.phanType = PHAN_TYPE[phanType];
+    newGusest.ingredient = ingredient;
 
     const save = await getConnection().getRepository(Guest).save(newGusest);
 
+    const { pdfBase64 } = await ModifyPdf(
+      `${NAME_TITLE[nameTitle]} ${firstName} ${lastName}`
+    );
+
     return res.status(201).json({
       id: save.id,
+      pdfBase64,
     });
   } else {
     return res.status(200).json({ ...error });
@@ -41,11 +63,13 @@ export const AddData = async (req: Request, res: Response) => {
 export const getCertificate = async (req: Request, res: Response) => {
   const { id } = req.body;
 
-  const { firstName, lastName } = await getConnection()
+  const { firstName, lastName, nameTitle } = await getConnection()
     .getRepository(Guest)
     .findOne(id);
 
-  const { pdfBase64 } = await ModifyPdf(`${firstName} ${lastName}`);
+  const { pdfBase64 } = await ModifyPdf(
+    `${nameTitle} ${firstName} ${lastName}`
+  );
 
   return res.status(200).json({
     pdfBase64,
