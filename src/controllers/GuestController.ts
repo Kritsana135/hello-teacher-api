@@ -12,7 +12,7 @@ const addDataSchema = Joi.object({
   studentId: Joi.string().min(1).max(30).required(),
   greetingText: Joi.string().min(1).max(200).required(),
   nameTitle: Joi.number().required(),
-  phanName: Joi.string().max(30).required(),
+  phanName: Joi.string().max(30),
   phanType: Joi.number().required(),
   ingredient: Joi.string().required(),
 });
