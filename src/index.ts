@@ -2,7 +2,9 @@ import * as cors from "cors";
 import * as express from "express";
 import * as morgan from "morgan";
 import { createConnection } from "typeorm";
-import { AddData, getCertificate } from "./controllers/GuestController";
+import { login } from "./controllers/AdminController";
+import { addData, getCertificate } from "./controllers/GuestController";
+import { authMiddleWare } from "./middleware/authMiddleware";
 
 const app = express();
 const PORT = 80;
@@ -23,8 +25,11 @@ app.get("/", (_, res) => {
   });
 });
 
-app.post("/register", AddData);
+app.post("/register", addData);
 app.post("/certificate", getCertificate);
+
+app.post("/login", login);
+app.use(authMiddleWare);
 
 app.listen(PORT, () => {
   console.log(`server listening at port ${PORT}`);

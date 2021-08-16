@@ -20,7 +20,7 @@ const addDataSchema = Joi.object({
 const NAME_TITLE = ["นาย", "นางสาว", "นาง"];
 const PHAN_TYPE = ["สวยงาม", "ความคิดสร้างสรรค์"];
 
-export const AddData = async (req: Request, res: Response) => {
+export const addData = async (req: Request, res: Response) => {
   const { body } = req;
 
   const { error } = addDataSchema.validate(body);
