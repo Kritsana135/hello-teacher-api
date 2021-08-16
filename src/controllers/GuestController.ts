@@ -12,13 +12,13 @@ const addDataSchema = Joi.object({
   studentId: Joi.string().min(1).max(30).required(),
   greetingText: Joi.string().min(1).max(200).required(),
   nameTitle: Joi.number().required(),
-  phanName: Joi.string().max(30),
-  phanType: Joi.number().required(),
+  phanName: Joi.string().empty().max(30),
+  phanType: Joi.string().required(),
   ingredient: Joi.string().required(),
 });
 
 const NAME_TITLE = ["นาย", "นางสาว", "นาง"];
-const PHAN_TYPE = ["สวยงาม", "ความคิดสร้างสรรค์"];
+// const PHAN_TYPE = ["สวยงาม", "ความคิดสร้างสรรค์"];
 
 export const addData = async (req: Request, res: Response) => {
   const { body } = req;
@@ -42,7 +42,7 @@ export const addData = async (req: Request, res: Response) => {
     newGusest.greetingText = greetingText;
     newGusest.phanName = phanName;
     newGusest.nameTitle = NAME_TITLE[nameTitle];
-    newGusest.phanType = PHAN_TYPE[phanType];
+    newGusest.phanType = phanType;
     newGusest.ingredient = ingredient;
 
     const save = await getConnection().getRepository(Guest).save(newGusest);
