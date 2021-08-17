@@ -12,9 +12,9 @@ const addDataSchema = Joi.object({
   studentId: Joi.string().min(1).max(30).required(),
   greetingText: Joi.string().min(1).max(200).required(),
   nameTitle: Joi.number().required(),
-  phanName: Joi.string().empty().max(30),
+  phanName: Joi.string().allow("").max(30),
   phanType: Joi.string().required(),
-  ingredient: Joi.string().required(),
+  ingredient: Joi.string().allow("").max(30),
 });
 
 const NAME_TITLE = ["นาย", "นางสาว", "นาง"];
