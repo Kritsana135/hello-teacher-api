@@ -14,7 +14,7 @@ const addDataSchema = Joi.object({
   nameTitle: Joi.number().required(),
   phanName: Joi.string().allow("").max(30),
   phanType: Joi.string().required(),
-  ingredient: Joi.string().allow("").max(30),
+  ingredient: Joi.string().allow(""),
 });
 
 const NAME_TITLE = ["นาย", "นางสาว", "นาง"];
@@ -41,7 +41,7 @@ export const addData = async (req: Request, res: Response) => {
     newGusest.studentId = studentId;
     newGusest.greetingText = greetingText;
     newGusest.phanName = phanName;
-    newGusest.nameTitle = NAME_TITLE[nameTitle];
+    newGusest.nameTitle = NAME_TITLE[nameTitle - 1];
     newGusest.phanType = phanType;
     newGusest.ingredient = ingredient;
 
