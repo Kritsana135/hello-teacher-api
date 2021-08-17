@@ -35,20 +35,22 @@ export const addData = async (req: Request, res: Response) => {
       phanType,
       ingredient,
     } = body;
+    const titleIndex = Number.parseInt(nameTitle) - 1;
+    console.log(titleIndex);
     const newGusest = new Guest();
     newGusest.firstName = firstName;
     newGusest.lastName = lastName;
     newGusest.studentId = studentId;
     newGusest.greetingText = greetingText;
     newGusest.phanName = phanName;
-    newGusest.nameTitle = NAME_TITLE[nameTitle - 1];
+    newGusest.nameTitle = NAME_TITLE[titleIndex];
     newGusest.phanType = phanType;
     newGusest.ingredient = ingredient;
 
     const save = await getConnection().getRepository(Guest).save(newGusest);
 
     const { pdfBase64 } = await ModifyPdf(
-      `${NAME_TITLE[nameTitle]} ${firstName} ${lastName}`
+      `${NAME_TITLE[titleIndex]} ${firstName} ${lastName}`
     );
 
     return res.status(201).json({
