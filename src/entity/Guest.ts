@@ -36,4 +36,7 @@ export class Guest {
 
   @CreateDateColumn()
   createdAt: Date;
+
+  @Column({ default: null })
+  deletedAt: Date;
 }

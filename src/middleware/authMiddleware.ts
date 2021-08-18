@@ -8,10 +8,12 @@ export const authMiddleWare = (
 ) => {
   const { authorization } = req.headers;
   try {
-    const accessToken = authorization.split(" ")[1];
+    const accessToken = authorization;
+    console.log(accessToken);
     if (accessToken) {
       const verify = jwt.verify(accessToken, "iam-thoris-papa.20989");
       console.log(verify);
+      next();
     } else {
       res.status(401).json({
         message: "Not found token in header! ",
