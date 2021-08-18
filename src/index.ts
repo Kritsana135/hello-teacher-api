@@ -3,7 +3,7 @@ import * as express from "express";
 import * as morgan from "morgan";
 import { createConnection } from "typeorm";
 import { login } from "./controllers/AdminController";
-import { addData, getCertificate } from "./controllers/GuestController";
+import { addData, getCertificate, ModifyPdf } from "./controllers/GuestController";
 import { authMiddleWare } from "./middleware/authMiddleware";
 
 const app = express();
@@ -34,3 +34,4 @@ app.use(authMiddleWare);
 app.listen(PORT, () => {
   console.log(`server listening at port ${PORT}`);
 });
+

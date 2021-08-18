@@ -78,9 +78,9 @@ export const getCertificate = async (req: Request, res: Response) => {
   });
 };
 
-const ModifyPdf = async (fullName: string) => {
-  const existingPdfBytes = fs.readFileSync("cer.pdf");
-  const fontBytes = fs.readFileSync("prompt.ttf");
+export const ModifyPdf = async (fullName: string) => {
+  const existingPdfBytes = fs.readFileSync("cer2.pdf");
+  const fontBytes = fs.readFileSync("wansika.ttf");
 
   const pdfDoc = await PDFDocument.load(existingPdfBytes);
 
@@ -94,12 +94,12 @@ const ModifyPdf = async (fullName: string) => {
   const { width, height } = firstPage.getSize();
 
   const flLength = fullName.length;
-  const startAt = (490 - flLength * 9.24528302) / 2 + 230;
+  const startAt = (490 - flLength * 9.24528302) / 2 + 145;
 
   firstPage.drawText(fullName, {
     x: startAt,
-    y: height / 2 + 10,
-    size: 16,
+    y: height / 2 + 30,
+    size: 32,
     font: promptFont,
     color: rgb(0, 0, 0),
   });
