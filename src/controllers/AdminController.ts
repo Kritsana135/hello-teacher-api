@@ -26,7 +26,7 @@ export const login = async (req: Request, res: Response) => {
 
     if (admin) {
       const token = jwt.sign(admin.username, "iam-thoris-papa.20989");
-      return res.status(200).json({ token });
+      return res.status(200).json({ code: "SUCCESS", token });
     } else {
       return res.sendStatus(400);
     }
@@ -36,6 +36,7 @@ export const login = async (req: Request, res: Response) => {
 };
 
 export const getPati = async (req: Request, res: Response) => {
+  console.log("getPati");
   let {
     page = "1",
     limit = "10",
@@ -61,10 +62,13 @@ export const getPati = async (req: Request, res: Response) => {
     return;
   }
 
-  if (isSearch) {
+  console.log("isSearch", isSearch);
+  if (!isSearch) {
+    console.log("not search");
     let limit_n = parseInt(limit);
     let page_n = parseInt(page);
     const indexOf = limit_n * (page_n - 1);
+    console.log("indexOf", indexOf);
 
     const connection = getConnection();
     const userManger = connection.manager;
@@ -78,12 +82,13 @@ export const getPati = async (req: Request, res: Response) => {
       .getRepository(Guest)
       .createQueryBuilder("parti")
       .where("parti.deletedAt IS NULL")
-      .orderBy("parti.createdAt", "DESC")
+      .orderBy("parti.createdAt", "ASC")
       .take(limit_n)
       .skip(indexOf)
       .getManyAndCount();
 
     res.status(200).json({
+      code: "SUCCESS",
       data: paggingData[0],
       perPage: limit_n,
       totalPage: Math.ceil(size / limit_n),
@@ -109,6 +114,7 @@ export const getPati = async (req: Request, res: Response) => {
     }
     const execute = await search.take(10).getManyAndCount();
     res.status(200).json({
+      code: "SUCCESS",
       data: execute[0],
       perPage: limit,
       totalPage: 1,
