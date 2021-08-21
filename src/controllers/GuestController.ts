@@ -79,8 +79,8 @@ export const getCertificate = async (req: Request, res: Response) => {
 };
 
 export const ModifyPdf = async (fullName: string) => {
-  const existingPdfBytes = fs.readFileSync("cer2.pdf");
-  const fontBytes = fs.readFileSync("wansika.ttf");
+  const existingPdfBytes = fs.readFileSync("./assets/cer.pdf");
+  const fontBytes = fs.readFileSync("./assets/wansika.ttf");
 
   const pdfDoc = await PDFDocument.load(existingPdfBytes);
 
@@ -106,5 +106,10 @@ export const ModifyPdf = async (fullName: string) => {
 
   // Serialize the PDFDocument to bytes (a Uint8Array)
   const pdfBase64 = await pdfDoc.saveAsBase64({ dataUri: true });
+
+  // test
+  // const test_save = await pdfDoc.save();
+  // fs.writeFileSync("certificate.pdf", test_save);
+  /////////
   return { pdfBase64 };
 };
