@@ -25,7 +25,7 @@ export const login = async (req: Request, res: Response) => {
       .getOne();
 
     if (admin) {
-      const token = jwt.sign(admin.username, "iam-thoris-papa.20989");
+      const token = jwt.sign(admin.username, process.env.JWT_SECRET);
       return res.status(200).json({ code: "SUCCESS", token });
     } else {
       return res.sendStatus(400);

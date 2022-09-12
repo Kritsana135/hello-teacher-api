@@ -11,7 +11,7 @@ export const authMiddleWare = (
     const accessToken = authorization;
     console.log(accessToken);
     if (accessToken) {
-      const verify = jwt.verify(accessToken, "iam-thoris-papa.20989");
+      const verify = jwt.verify(accessToken, process.env.JWT_SECRET);
       console.log(verify);
       next();
     } else {

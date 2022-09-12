@@ -1,17 +1,13 @@
+require('dotenv').config()
 import * as cors from "cors";
 import * as express from "express";
 import * as morgan from "morgan";
 import { createConnection } from "typeorm";
 import { getPati, login } from "./controllers/AdminController";
-import {
-  addData,
-  getCertificate,
-  ModifyPdf,
-} from "./controllers/GuestController";
+import { addData, getCertificate } from "./controllers/GuestController";
 import { authMiddleWare } from "./middleware/authMiddleware";
-
 const app = express();
-const PORT = 80;
+const PORT = process.env.APP_PORT || 3000;
 
 createConnection().then(() =>
   console.log("connect db successfull! 🥂", new Date().toISOString())
